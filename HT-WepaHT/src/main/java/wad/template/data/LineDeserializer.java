@@ -22,7 +22,6 @@ public class LineDeserializer extends JsonDeserializer<List<Line>> {
         textData = jp.nextTextValue();
 
         while (textData != null) {
-            System.out.println(textData);
             Line line = new Line();
             String[] data = textData.split(":");
             line.setLinecode(data[0]);

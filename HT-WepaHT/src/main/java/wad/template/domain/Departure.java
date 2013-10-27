@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 public class Departure {
     @JsonProperty("code")
