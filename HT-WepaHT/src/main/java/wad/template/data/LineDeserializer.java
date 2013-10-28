@@ -7,22 +7,22 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import wad.template.domain.Line;
+import wad.template.domain.LineInfo;
 
-public class LineDeserializer extends JsonDeserializer<List<Line>> {
+public class LineDeserializer extends JsonDeserializer<List<LineInfo>> {
     public LineDeserializer() {
         super();
     }
     
     @Override
-    public List<Line> deserialize(JsonParser jp, DeserializationContext dc) throws IOException, JsonProcessingException {
-        List<Line> lines = new ArrayList<Line>();
+    public List<LineInfo> deserialize(JsonParser jp, DeserializationContext dc) throws IOException, JsonProcessingException {
+        List<LineInfo> lines = new ArrayList<LineInfo>();
         
         String textData;
         textData = jp.nextTextValue();
 
         while (textData != null) {
-            Line line = new Line();
+            LineInfo line = new LineInfo();
             String[] data = textData.split(":");
             line.setLinecode(data[0]);
             line.setDestination(data[1]);

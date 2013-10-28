@@ -64,6 +64,9 @@ public class Stop implements Serializable {
     
     @JsonProperty("lines")
     @Transient
+    private List<LineInfo> lineInfos;
+    
+    @Transient
     private List<Line> lines;
     
     @JsonIgnore
@@ -98,13 +101,13 @@ public class Stop implements Serializable {
         this.departures = departures;
     }
 
-    public List<Line> getLines() {
-        return lines;
+    public List<LineInfo> getLineinfos() {
+        return lineInfos;
     }
 
     @JsonDeserialize(using = LineDeserializer.class)
-    public void setLines(List<Line> lines) {
-        this.lines = lines;
+    public void setLineinfos(List<LineInfo> lines) {
+        this.lineInfos = lines;
     }
 
     public Integer getCode() {

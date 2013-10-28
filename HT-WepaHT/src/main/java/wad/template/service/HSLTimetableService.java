@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import wad.template.domain.Line;
+import wad.template.domain.LineInfo;
 import wad.template.domain.Stop;
 
 @Service
@@ -72,7 +72,7 @@ public class HSLTimetableService implements TimetableService {
     }
 
     @Override
-    public Line getLine(Integer lineCode) {
+    public LineInfo getLineInfo(Integer lineCode) {
         String queryString;
         
         queryString = 
@@ -80,11 +80,11 @@ public class HSLTimetableService implements TimetableService {
                 String.format("&query=%1$d", lineCode);
         
         URL requestUrl;
-        Line line;
+        LineInfo line;
         
         try {
             requestUrl = new URL(queryString);
-            List<Line> lines = HSLStopMapper.readValue(requestUrl, new TypeReference<List<Line>>() {});
+            List<LineInfo> lines = HSLStopMapper.readValue(requestUrl, new TypeReference<List<LineInfo>>() {});
             line = lines.get(0);
         } catch (IOException e) {
             Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting line from HSL api! :(", e);
