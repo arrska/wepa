@@ -3,7 +3,10 @@ package wad.template.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,6 +14,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import wad.template.domain.Line;
 import wad.template.domain.LineInfo;
 import wad.template.domain.Stop;
 
@@ -72,25 +76,60 @@ public class HSLTimetableService implements TimetableService {
     }
 
     @Override
-    public LineInfo getLineInfo(Integer lineCode) {
+    public List<Line> getLines(String query) {
         String queryString;
+        String encodedQuery;
+        
+        try {
+            encodedQuery = URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "epic no UTF-8 exception when urlencoding", ex);
+            return null;
+        }
         
         queryString = 
-                String.format(apiUrl, token, tokenPass, "line") +
-                String.format("&query=%1$d", lineCode);
-        
+                String.format(apiUrl, token, tokenPass, "lines") +
+                String.format("&query=%1$s", encodedQuery);
+        System.out.println(queryString);
         URL requestUrl;
-        LineInfo line;
+        List<Line> lines;
         
         try {
             requestUrl = new URL(queryString);
-            List<LineInfo> lines = HSLStopMapper.readValue(requestUrl, new TypeReference<List<LineInfo>>() {});
-            line = lines.get(0);
+            lines = HSLStopMapper.readValue(requestUrl, new TypeReference<List<Line>>() {});
+            //line = lines.get(0);
         } catch (IOException e) {
-            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting line from HSL api! :(", e);
+            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting line data from HSL api! :(", e);
             return null;
         }
-        return line;
+        return lines;
     }
+    
+    @Override
+    public Line getLine(String lineCode) {
+        return getLines(lineCode).get(0);
+    }
+    
+    @Override
+    public Line getLine(LineInfo lineInfo) {
+        return getLine(lineInfo.getLinecode());
+    }
+
+    @Override
+    public List<Line> getLines(List<LineInfo> lineinfos) {
+        List<Line> lines; // = new ArrayList<Line>();
+        String lineQuery = "";
+        
+        for (LineInfo lineinfo : lineinfos) {
+            lineQuery += lineinfo.getLinecode() + "|";
+        }
+        
+        lineQuery = lineQuery.substring(0, lineQuery.length()-1);
+        
+        lines = getLines(lineQuery);
+        
+        return lines;
+    }
+
     
 }

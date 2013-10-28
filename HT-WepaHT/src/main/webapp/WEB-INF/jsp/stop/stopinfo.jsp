@@ -99,13 +99,15 @@
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="line" items="${stop.lines}" varStatus="status">
+            <c:forEach var="line" items="${stop.lineInfos}" varStatus="status">
                 <tr>
                     <td>
                         ${status.count}
                     </td>
                     <td>
+                        <a href="${pageContext.request.contextPath}/app/line?linecode=${line.linecode}">
                         ${line.linecode}
+                        </a>
                     </td>
                     <td>
                         ${line.destination}

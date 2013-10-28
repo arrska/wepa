@@ -13,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import wad.template.data.CoordinateDeserializer;
-import wad.template.data.LineDeserializer;
+import wad.template.data.LineInfoDeserializer;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -67,6 +67,7 @@ public class Stop implements Serializable {
     private List<LineInfo> lineInfos;
     
     @Transient
+    @JsonIgnore
     private List<Line> lines;
     
     @JsonIgnore
@@ -74,6 +75,23 @@ public class Stop implements Serializable {
     private List<SiteUser> favouritedBy;
 
     public Stop() {
+    }
+
+    public List<LineInfo> getLineInfos() {
+        return lineInfos;
+    }
+
+    @JsonDeserialize(using = LineInfoDeserializer.class)
+    public void setLineInfos(List<LineInfo> lineInfos) {
+        this.lineInfos = lineInfos;
+    }
+
+    public List<Line> getLines() {
+        return lines;
+    }
+
+    public void setLines(List<Line> lines) {
+        this.lines = lines;
     }
 
     public List<SiteUser> getFavouritedBy() {
@@ -99,15 +117,6 @@ public class Stop implements Serializable {
 
     public void setDepartures(List<Departure> departures) {
         this.departures = departures;
-    }
-
-    public List<LineInfo> getLineinfos() {
-        return lineInfos;
-    }
-
-    @JsonDeserialize(using = LineDeserializer.class)
-    public void setLineinfos(List<LineInfo> lines) {
-        this.lineInfos = lines;
     }
 
     public Integer getCode() {

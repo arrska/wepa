@@ -17,7 +17,7 @@
             <input type="submit" />
         </form>
         
-        <c:if test="${!empty stops}">
+        <c:if test="${not empty stops}">
             <h2>Search results for "${query}":</h2>
             
             <table>

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import wad.template.domain.LineInfo;
 
-public class LineDeserializer extends JsonDeserializer<List<LineInfo>> {
-    public LineDeserializer() {
+public class LineInfoDeserializer extends JsonDeserializer<List<LineInfo>> {
+    public LineInfoDeserializer() {
         super();
     }
     
