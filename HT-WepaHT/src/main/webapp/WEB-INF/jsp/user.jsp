@@ -7,33 +7,39 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css" type="text/css" />
-        <title>User details</title>
+        <title>${username} | user details</title>
     </head>
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
-        <h1><sec:authentication property="principal.username" /></h1>
-        <form action="${pageContext.request.contextPath}/app/user/<sec:authentication property="principal.username" />" method="post">
+        <h1>${username}</h1>
             delete user<br />
-            <input type="submit" name="delete" /><br />
-            
-            <!--table>
-                <caption>change password</caption>
+        <form:form action="${pageContext.request.contextPath}/app/user/${username}" method="DELETE">
+            <input type="submit" /><br />
+        </form:form>
+        <form:form commandName="passwdForm" action="${pageContext.request.contextPath}/app/user/${username}" method="PUT">
+            <table>
                 <tbody>
                     <tr>
-                        <td>new password</td>
-                        <td><input type="text" name="password1" /></td>
+                        <td>new password:</td>
+                        <td>
+                            <form:password path="password1" />
+                            <form:errors path="password1" />
+                        </td>
                     </tr>
                     <tr>
-                        <td>again</td>
-                        <td><input type="text" name="password2" /></td>
+                        <td>again:</td>
+                        <td>
+                            <form:password path="password2" />
+                            <form:errors path="password2" />
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="password" />
+                            <input type="submit" />
                         </td>
                     </tr>
                 </tbody>
-            </table-->
-        </form>
+            </table>
+        </form:form>
     </body>
 </html>

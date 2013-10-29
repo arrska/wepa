@@ -11,13 +11,13 @@ public class Line {
     @JsonProperty(value = "name")
     private String name;
     @JsonProperty(value = "code_short")
-    private String shortcode;
+    private String shortCode;
     @JsonProperty(value = "transport_type_id")
     private Integer transportType;
     @JsonProperty(value = "line_start")
     private String start;
     @JsonProperty(value = "line_end")
-    private String stop;
+    private String end;
 
     @JsonProperty(value = "line_stops")
     private List<LineStop> stops;
@@ -37,12 +37,12 @@ public class Line {
         this.name = name;
     }
 
-    public String getShortcode() {
-        return shortcode;
+    public String getShortCode() {
+        return shortCode;
     }
 
-    public void setShortcode(String shortcode) {
-        this.shortcode = shortcode;
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public Integer getTransportType() {
@@ -61,12 +61,12 @@ public class Line {
         this.start = start;
     }
 
-    public String getStop() {
-        return stop;
+    public String getEnd() {
+        return end;
     }
 
-    public void setStop(String stop) {
-        this.stop = stop;
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public List<LineStop> getStops() {

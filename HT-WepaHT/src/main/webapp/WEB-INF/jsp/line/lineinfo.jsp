@@ -6,13 +6,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css" type="text/css" />
-        <title>Information of line ${line.name}</title>
+        <title>${line.name} | line info</title>
         
     </head>
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>Line info</h1>
-        <h2>${line.name} (${line.code})</h2>
+        <h2>${line.name} (${line.shortCode})</h2>
 
     <table>
         <caption>
@@ -34,7 +34,9 @@
                         ${status.count}
                     </td>
                     <td>
-                        ${linestop.shortcode}
+                        <a href="${pageContext.request.contextPath}/app/stop/${linestop.code}">
+                            ${linestop.shortCode}
+                        </a>
                     </td>
                     <td>
                         ${linestop.address}

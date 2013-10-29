@@ -1,15 +1,21 @@
 package wad.template.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Minutes;
 
 public class Departure {
     @JsonProperty("code")
-    private String linecode;
+    private String lineCode;
+    
+    @JsonIgnore
+    private Line line;
     
     @JsonProperty("time")
     private String time;
@@ -19,13 +25,21 @@ public class Departure {
 
     public Departure() {
     }
-    
-    public String getLinecode() {
-        return linecode;
+
+    public Line getLine() {
+        return line;
     }
 
-    public void setLinecode(String linecode) {
-        this.linecode = linecode;
+    public void setLine(Line line) {
+        this.line = line;
+    }
+    
+    public String getLineCode() {
+        return lineCode;
+    }
+
+    public void setLineCode(String lineCode) {
+        this.lineCode = lineCode;
     }
 
     public String getTime() {
@@ -56,6 +70,10 @@ public class Departure {
             Logger.getLogger(Departure.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    public Integer getMinutesUntil() {
+        return Minutes.minutesBetween(new DateTime(), new DateTime(getDatetime())).getMinutes();
     }
 
     

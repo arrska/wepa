@@ -11,11 +11,12 @@
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>Stop search</h1>
-        <form method="get" action="${pageContext.request.contextPath}/app/stop/search">
-            <input name="q" type="text" value="<c:if test="${!empty query}"><c:out value="${query}" /></c:if>" />
-            <c:if test="${error}">Invalid query</c:if>
+        
+        <form:form commandName="searchForm" method="GET" action="${pageContext.request.contextPath}/app/stop/search">
+            <form:input path="query" /><form:errors path="query" />
+            <br />
             <input type="submit" />
-        </form>
+        </form:form>
         
         <c:if test="${not empty stops}">
             <h2>Search results for "${query}":</h2>
@@ -38,7 +39,7 @@
                             </a>
                         </td>
                         <td>${stop.address}</td>
-                        <td>${stop.code}</td>
+                        <td>${stop.shortCode}</td>
                     </tr>
             </c:forEach>
             </table>

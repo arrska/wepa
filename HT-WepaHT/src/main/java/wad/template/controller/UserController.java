@@ -3,8 +3,9 @@ package wad.template.controller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.validation.Valid;
-import wad.template.data.RegistrationFormObject;
+import wad.template.data.PasswdFormObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import wad.template.data.RegistrationFormObject;
 import wad.template.domain.SiteUser;
 import wad.template.service.UserControlService;
 
@@ -22,13 +25,14 @@ public class UserController {
     @Autowired
     private UserControlService userControlService;
     
+    @PreAuthorize("!isAuthenticated()")
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public String registrationHandler(
             @Valid @ModelAttribute(value = "regForm") RegistrationFormObject regForm, 
-            BindingResult bindingResult) {
-        
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
         if (!regForm.getPassword1().equals(regForm.getPassword2())) {
-            bindingResult.addError(new FieldError("regform", "password1", "passwords didnt match"));
+            bindingResult.addError(new FieldError("regForm", "password1", "passwords didnt match"));
         }
         
         if (bindingResult.hasErrors()) {
@@ -44,12 +48,13 @@ public class UserController {
             bindingResult.addError(new FieldError("regform", "username", ex.getMessage()));
             return "register";
         }
-        
+        redirectAttributes.addFlashAttribute("message", "Registration complete, please sign in");
+        redirectAttributes.addFlashAttribute("username", user.getName());
         return "redirect:login";
     }
+    
     @RequestMapping(value = "register", method = RequestMethod.GET)
     public String showRegistration (@ModelAttribute(value = "regForm") RegistrationFormObject regForm, Model model) {
-        model.addAttribute("users", userControlService.getUsers());
         return "register";
     }
     
@@ -59,20 +64,45 @@ public class UserController {
         return "login";
     }
     
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="user/{username}", method = RequestMethod.GET)
-    public String userInfo(Model model, @PathVariable(value = "username") String username) {
+    public String userInfo(
+            @ModelAttribute(value = "passwdForm") PasswdFormObject passwdForm, 
+            Model model, 
+            @PathVariable(value = "username") String username) {
         model.addAttribute("user", userControlService.getUser(username));
         return "user";
     }
     
-    @RequestMapping(value="user/{username}", method = RequestMethod.POST)
-    public String userModify(
-            Model model, 
-            @PathVariable(value = "username") String username, 
-            @RequestParam(value = "delete", required = false) String delete) {
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value="user/{username}", method = RequestMethod.PUT)
+    public String userPasswd(
+            @Valid @ModelAttribute(value = "passwdForm") PasswdFormObject passwdForm,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+                
+        if (!passwdForm.getPassword1().equals(passwdForm.getPassword2())) {
+            bindingResult.addError(new FieldError("passwdForm", "password1", "passwords didnt match"));
+        }
         
-        if (delete != null) {
+        if (bindingResult.hasErrors()) {
+            return "user";
+        }
+        userControlService.changePassword(userControlService.getAuthenticatedUser(), passwdForm.getPassword1());
+        
+        redirectAttributes.addFlashAttribute("message", "Password changed");
+        return "redirect:/app/";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value="user/{username}", method = RequestMethod.DELETE)
+    public String deleteUser(@PathVariable(value = "username") String username, RedirectAttributes redirectAttributes) {
+        SiteUser authenticatedUser = userControlService.getAuthenticatedUser();
+        
+        if (username.equals(authenticatedUser.getName())) {
             userControlService.deleteUser(username);
+            redirectAttributes.addFlashAttribute("message", "user deleted forever");
         }
         
         return "redirect:/app/";

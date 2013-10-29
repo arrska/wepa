@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import wad.template.domain.Departure;
 import wad.template.domain.Line;
 import wad.template.domain.LineInfo;
 import wad.template.domain.Stop;
@@ -56,7 +57,7 @@ public class HSLTimetableService implements TimetableService {
     
     
     @Override
-    public List<Stop> getStops(String query) {
+    public List<Stop> getStops(String query, boolean withLines) {
         URL requestUrl;
         List<Stop> stops;
         
@@ -67,12 +68,23 @@ public class HSLTimetableService implements TimetableService {
             Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting stops from HSL api! :(", e);
             return null;
         }
+        
+        if (withLines) {
+            for (Stop stop : stops) {
+                stop.setLines(getLines(stop.getLineInfos()));
+                
+                for (Departure departure : stop.getDepartures()) {
+                    departure.setLine(this.getLine(departure.getLineCode()));
+                }
+            }
+        }
+        
         return stops;
     }
 
     @Override
-    public Stop getStop(Integer stopCode) {
-        return getStops(stopCode.toString()).get(0);
+    public Stop getStop(Integer stopCode, boolean withLines) {
+        return getStops(stopCode.toString(), withLines).get(0);
     }
 
     @Override
@@ -97,7 +109,6 @@ public class HSLTimetableService implements TimetableService {
         try {
             requestUrl = new URL(queryString);
             lines = HSLStopMapper.readValue(requestUrl, new TypeReference<List<Line>>() {});
-            //line = lines.get(0);
         } catch (IOException e) {
             Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting line data from HSL api! :(", e);
             return null;
@@ -112,16 +123,16 @@ public class HSLTimetableService implements TimetableService {
     
     @Override
     public Line getLine(LineInfo lineInfo) {
-        return getLine(lineInfo.getLinecode());
+        return getLine(lineInfo.getLineCode());
     }
 
     @Override
     public List<Line> getLines(List<LineInfo> lineinfos) {
-        List<Line> lines; // = new ArrayList<Line>();
+        List<Line> lines;
         String lineQuery = "";
         
         for (LineInfo lineinfo : lineinfos) {
-            lineQuery += lineinfo.getLinecode() + "|";
+            lineQuery += lineinfo.getLineCode() + "|";
         }
         
         lineQuery = lineQuery.substring(0, lineQuery.length()-1);
@@ -130,6 +141,4 @@ public class HSLTimetableService implements TimetableService {
         
         return lines;
     }
-
-    
 }

@@ -2,15 +2,15 @@ package wad.template.domain;
 
 
 public class LineInfo {
-    private String linecode;
+    private String lineCode;
     private String destination;
     
-    public String getLinecode() {
-        return linecode;
+    public String getLineCode() {
+        return lineCode;
     }
 
-    public void setLinecode(String linecode) {
-        this.linecode = linecode;
+    public void setLineCode(String lineCode) {
+        this.lineCode = lineCode;
     }
 
     public String getDestination() {

@@ -51,13 +51,5 @@
         </form:form>
         
     </sec:authorize>
-    
-    <c:if test="${not empty users}">
-        <ul>
-            <c:forEach var="user" items="${users}">
-                <li>${user.name} ${user.password}</li>
-                </c:forEach>
-        </ul>
-    </c:if>
 </body>
 </html>

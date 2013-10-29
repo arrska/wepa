@@ -54,6 +54,15 @@
         <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
     
+    <filter>
+        <filter-name>http-method-filter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>http-method-filter</filter-name>
+        <servlet-name>spring-dispatcher</servlet-name>
+    </filter-mapping>
+    
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

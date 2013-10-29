@@ -8,7 +8,7 @@ public class LineStop {
     @JsonProperty(value = "code")
     private Integer code;
     @JsonProperty(value = "codeShort")
-    private String shortcode;
+    private String shortCode;
     @JsonProperty(value = "time")
     private Integer time;
     @JsonProperty(value = "address")
@@ -26,12 +26,12 @@ public class LineStop {
         this.code = code;
     }
 
-    public String getShortcode() {
-        return shortcode;
+    public String getShortCode() {
+        return shortCode;
     }
 
-    public void setShortcode(String shortcode) {
-        this.shortcode = shortcode;
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public Integer getTime() {

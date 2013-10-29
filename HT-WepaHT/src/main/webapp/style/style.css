@@ -8,3 +8,15 @@ table, td, tbody, table caption {
     width: 250px;
     height: 250px;
 }
+
+.deptable, .linetable {
+    min-width: 40%;
+}
+
+.messageblock {
+    border: 2px solid green;
+}
+
+.errorblock {
+    border: 2px solid red;
+}

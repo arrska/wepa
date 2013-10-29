@@ -13,16 +13,15 @@
         <c:if test="${empty stops}">
             ei pysäkkejä
         </c:if>
-            
-        <c:if test="${not empty stops}">
+        <c:if test="${empty stops}">
             <ul>
-            <c:forEach var="stop" items="${stops}">
-                <li>
-                    <a href="${pageContext.request.contextPath}/app/stop/${stop.code}">
-                        ${stop.name} ${stop.address} (${stop.code})
-                    </a>
-                </li>
-            </c:forEach>
+                <c:forEach var="stop" items="${stops}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/app/stop/${stop.code}">
+                            ${stop.name} ${stop.address} (${stop.shortCode})
+                        </a>
+                    </li>
+                </c:forEach>
             </ul>
         </c:if>
     </body>

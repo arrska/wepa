@@ -10,4 +10,6 @@ public interface UserControlService {
     public List<SiteUser> getUsers();
     public void deleteUser(String username);
     public boolean isAuthenticated();
+
+    public void changePassword(SiteUser authenticatedUser, String password1);
 }

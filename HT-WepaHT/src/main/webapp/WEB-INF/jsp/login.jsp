@@ -29,7 +29,7 @@
                     <tbody>
                         <tr>
                             <td>username:</td>
-                            <td><input type="text" name="j_username" /></td>
+                            <td><input type="text" name="j_username" value="${username}" /></td>
                         </tr>
                         <tr>
                             <td>password:</td>
