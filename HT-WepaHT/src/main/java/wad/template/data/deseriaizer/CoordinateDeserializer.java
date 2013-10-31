@@ -1,4 +1,4 @@
-package wad.template.data;
+package wad.template.data.deseriaizer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

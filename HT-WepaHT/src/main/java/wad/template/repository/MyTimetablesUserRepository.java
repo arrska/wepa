@@ -6,5 +6,5 @@ import wad.template.domain.SiteUser;
 
 @Repository
 public interface MyTimetablesUserRepository  extends CrudRepository<SiteUser, String> {
-    
+    SiteUser findOneByApikey(String apikey);
 }

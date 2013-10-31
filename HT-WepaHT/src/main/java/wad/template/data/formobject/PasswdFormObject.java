@@ -1,6 +1,5 @@
-package wad.template.data;
+package wad.template.data.formobject;
 
-import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 public class PasswdFormObject {

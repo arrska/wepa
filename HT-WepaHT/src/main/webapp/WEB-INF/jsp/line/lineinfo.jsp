@@ -13,7 +13,7 @@
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>Line info</h1>
         <h2>${line.name} (${line.shortCode})</h2>
-
+        <h3>${line.transportTypeName}</h3>
     <table>
         <caption>
             stops

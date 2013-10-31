@@ -19,6 +19,8 @@ public class SiteUser implements Serializable {
     private String name;
     @Column(name = "password")
     private String password;
+    @Column(name = "apikey")
+    private String apikey;
     
     @ManyToMany
     @JoinTable(name = "favourite_stops",
@@ -59,7 +61,13 @@ public class SiteUser implements Serializable {
     public void setFavouriteStops(List<Stop> favouriteStops) {
         this.favouriteStops = favouriteStops;
     }
-    
-    
+
+    public String getApikey() {
+        return apikey;
+    }
+
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
+    }
     
 }

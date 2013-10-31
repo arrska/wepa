@@ -12,10 +12,14 @@
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>${username}</h1>
-            delete user<br />
+        api key: <b> ${apikey} </b>
+        <br />
+        delete user<br />
         <form:form action="${pageContext.request.contextPath}/app/user/${username}" method="DELETE">
-            <input type="submit" /><br />
+            <button type="submit">delete user</button>
         </form:form>
+        <br />
+        <br />
         <form:form commandName="passwdForm" action="${pageContext.request.contextPath}/app/user/${username}" method="PUT">
             <table>
                 <tbody>
@@ -35,7 +39,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" />
+                            <button type="submit">ok</button>
                         </td>
                     </tr>
                 </tbody>

@@ -62,6 +62,7 @@
                     <tr>
                         <th>#</th>
                         <th>line</th>
+                        <th>type</th>
                         <th>destination</th>
                         <th>time</th>
                         <th>minutes</th>
@@ -77,6 +78,9 @@
                                 <a href="${pageContext.request.contextPath}/app/line/${depa.line.code}/">
                                     ${depa.line.shortCode}
                                 </a>
+                            </td>
+                            <td>
+                                ${depa.line.transportTypeName}
                             </td>
                             <td>
                                 ${depa.line.end}

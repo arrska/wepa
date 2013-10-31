@@ -1,6 +1,7 @@
 package wad.template.service;
 
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,9 +15,6 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
     @Autowired
     private UserRepository userRepo;
     
-    @Autowired
-    private TimetableService timetableService;
-    
     @Override
     @Transactional(readOnly = false)
     public SiteUser newUser(SiteUser user) throws Exception {
@@ -24,12 +22,14 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
             throw new Exception("Username taken!");
         }
         
+        user.setApikey(UUID.randomUUID().toString());
+        
         return userRepo.save(user);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public SiteUser getUser(String username) {
+    public SiteUser findUser(String username) {
         return userRepo.findOne(username);
     }
 
@@ -50,7 +50,7 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
     @Transactional(readOnly = true)
     public SiteUser getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return this.getUser(auth.getName());
+        return this.findUser(auth.getName());
     }
 
     @Override
@@ -63,5 +63,10 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
     public void changePassword(SiteUser authenticatedUser, String password1) {
         authenticatedUser.setPassword(password1);
         userRepo.save(authenticatedUser);
+    }
+
+    @Override
+    public SiteUser findUserByApiKey(String apikey) {
+        return userRepo.findOneByApikey(apikey);
     }
 }

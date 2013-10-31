@@ -1,17 +1,16 @@
 [x] search stops
   [x] by name
   [x] by number
-[_] view next ten lines of stop
-[_] line timetables
-[_] map showing location of a stop
-[_] registering
-[_] log in
-[_] favourite stops
-[_] unfavourite stops
-[_] json api
-  [_] user's favourite stops
-  [_] stop timetable
-  [_] 
+[x] view next ten lines of stop
+[x] line timetables
+[x] map showing location of a stop
+[x] registering
+[x] log in
+[x] favourite stops
+[x] unfavourite stops
+[x] json api
+  [x] user's favourite stops
+  [x] stop timetable
 [_] input validation
 [_] input and output sanitization
 

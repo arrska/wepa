@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,7 +20,6 @@ import wad.template.domain.Stop;
 
 @Service
 public class HSLTimetableService implements TimetableService {
-
     private final String apiUrl = "http://api.reittiopas.fi/hsl/prod/?user=%1$s&pass=%2$s&request=%3$s&format=json";
     
     @Value("${hslapi.token}")
@@ -37,6 +35,44 @@ public class HSLTimetableService implements TimetableService {
         if (token == null) token = "";
         if (tokenPass == null) tokenPass = "";
         HSLStopMapper = new ObjectMapper();
+    }
+    
+    public static String TransportType(Integer transportTypeId) {
+        if (transportTypeId == 1) {
+            return "bus";
+        } else if (transportTypeId == 2) {
+            return "tram";
+        } else if (transportTypeId == 3) {
+            return "bus";
+        } else if (transportTypeId == 4) {
+            return "bus";
+        } else if (transportTypeId == 5) {
+            return "bus";
+        } else if (transportTypeId == 6) {
+            return "metro";
+        } else if (transportTypeId == 7) {
+            return "ferry";
+        } else if (transportTypeId == 8) {
+            return "u-bus";
+        } else if (transportTypeId == 12) {
+            return "train";
+        } else if (transportTypeId == 21) {
+            return "serviceline";
+        } else if (transportTypeId == 22) {
+            return "bus";
+        } else if (transportTypeId == 23) {
+            return "serviceline";
+        } else if (transportTypeId == 24) {
+            return "serviceline";
+        } else if (transportTypeId == 25) {
+            return "bus";
+        } else if (transportTypeId == 36) {
+            return "bus";
+        } else if (transportTypeId == 39) {
+            return "bus";
+        }
+        
+        return "unknown";
     }
     
     private String stopSearchQuery (String query, Date time, Integer time_limit, Integer dep_limit) {

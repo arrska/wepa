@@ -5,7 +5,8 @@ import wad.template.domain.SiteUser;
 
 public interface UserControlService {
     public SiteUser newUser(SiteUser user) throws Exception;
-    public SiteUser getUser(String username);
+    public SiteUser findUser(String username);
+    public SiteUser findUserByApiKey(String apikey);
     public SiteUser getAuthenticatedUser();
     public List<SiteUser> getUsers();
     public void deleteUser(String username);

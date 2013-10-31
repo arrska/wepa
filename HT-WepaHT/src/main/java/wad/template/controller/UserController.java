@@ -3,7 +3,7 @@ package wad.template.controller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.validation.Valid;
-import wad.template.data.PasswdFormObject;
+import wad.template.data.formobject.PasswdFormObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import wad.template.data.RegistrationFormObject;
+import wad.template.data.formobject.RegistrationFormObject;
 import wad.template.domain.SiteUser;
 import wad.template.service.UserControlService;
 
@@ -70,7 +70,7 @@ public class UserController {
             @ModelAttribute(value = "passwdForm") PasswdFormObject passwdForm, 
             Model model, 
             @PathVariable(value = "username") String username) {
-        model.addAttribute("user", userControlService.getUser(username));
+        model.addAttribute("apikey", userControlService.getAuthenticatedUser().getApikey());
         return "user";
     }
     
@@ -81,6 +81,7 @@ public class UserController {
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes) {
+        model.addAttribute("apikey", userControlService.getAuthenticatedUser().getApikey());
                 
         if (!passwdForm.getPassword1().equals(passwdForm.getPassword2())) {
             bindingResult.addError(new FieldError("passwdForm", "password1", "passwords didnt match"));

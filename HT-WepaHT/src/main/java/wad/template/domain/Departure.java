@@ -61,6 +61,7 @@ public class Departure {
         this.date = date;
     }
 
+    @JsonIgnore
     public Date getDatetime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
         
@@ -72,9 +73,8 @@ public class Departure {
         }
     }
     
+    @JsonIgnore
     public Integer getMinutesUntil() {
         return Minutes.minutesBetween(new DateTime(), new DateTime(getDatetime())).getMinutes();
     }
-
-    
 }

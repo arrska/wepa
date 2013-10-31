@@ -12,8 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import wad.template.data.CoordinateDeserializer;
-import wad.template.data.LineInfoDeserializer;
+import wad.template.data.deseriaizer.CoordinateDeserializer;
+import wad.template.data.deseriaizer.LineInfoDeserializer;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -21,6 +21,7 @@ import wad.template.data.LineInfoDeserializer;
 public class Stop implements Serializable {
     @Id
     @Column(name = "stopcode")
+    @JsonProperty("code")
     private Integer code;
     
     @JsonProperty("code_short")
@@ -67,7 +68,7 @@ public class Stop implements Serializable {
     private List<LineInfo> lineInfos;
     
     @Transient
-    @JsonIgnore
+    @JsonProperty("lines")
     private List<Line> lines;
     
     @JsonIgnore
@@ -77,6 +78,7 @@ public class Stop implements Serializable {
     public Stop() {
     }
 
+    @JsonIgnore
     public List<LineInfo> getLineInfos() {
         return lineInfos;
     }
@@ -90,6 +92,7 @@ public class Stop implements Serializable {
         return lines;
     }
 
+    @JsonIgnore
     public void setLines(List<Line> lines) {
         this.lines = lines;
     }
