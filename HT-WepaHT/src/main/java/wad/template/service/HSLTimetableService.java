@@ -12,10 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import wad.template.domain.Departure;
 import wad.template.domain.Line;
-import wad.template.domain.LineInfo;
 import wad.template.domain.Stop;
 
 @Service
@@ -91,45 +90,39 @@ public class HSLTimetableService implements TimetableService {
         return queryString;
     }
     
-    
     @Override
-    public List<Stop> getStops(String query, boolean withLines) {
+    @Cacheable(value ="stops")
+    public Stop getStop(Integer stopCode) {
+        Logger.getLogger(HSLTimetableService.class.getName()).log(Level.INFO, ("getting single stop indo of stop " + stopCode + " from HSLapi"));
+        return findStops(stopCode.toString()).get(0);
+    }
+    
+    @Cacheable(value ="stops")
+    @Override
+    public List<Stop> findStops(String query) {
         URL requestUrl;
         List<Stop> stops;
         
         try {
             requestUrl = new URL(stopSearchQuery(query, new Date(), 360, 10));
+            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.INFO, ("searching for stops with query " + query + " from HSLapi"));
             stops = HSLStopMapper.readValue(requestUrl, new TypeReference<List<Stop>>() {});
         } catch (IOException e) {
             Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting stops from HSL api! :(", e);
             return null;
         }
         
-        if (withLines) {
-            for (Stop stop : stops) {
-                stop.setLines(getLines(stop.getLineInfos()));
-                
-                for (Departure departure : stop.getDepartures()) {
-                    departure.setLine(this.getLine(departure.getLineCode()));
-                }
-            }
-        }
-        
         return stops;
     }
-
+    
     @Override
-    public Stop getStop(Integer stopCode, boolean withLines) {
-        return getStops(stopCode.toString(), withLines).get(0);
-    }
-
-    @Override
-    public List<Line> getLines(String query) {
+    @Cacheable(value ="lines")
+    public Line getLine(String lineCode) {
         String queryString;
         String encodedQuery;
         
         try {
-            encodedQuery = URLEncoder.encode(query, "UTF-8");
+            encodedQuery = URLEncoder.encode(lineCode, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "epic no UTF-8 exception when urlencoding", ex);
             return null;
@@ -138,43 +131,19 @@ public class HSLTimetableService implements TimetableService {
         queryString = 
                 String.format(apiUrl, token, tokenPass, "lines") +
                 String.format("&query=%1$s", encodedQuery);
-        System.out.println(queryString);
+        
         URL requestUrl;
         List<Line> lines;
         
         try {
             requestUrl = new URL(queryString);
+            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.INFO, ("getting line info of line " + lineCode + " from HSLapi"));
             lines = HSLStopMapper.readValue(requestUrl, new TypeReference<List<Line>>() {});
         } catch (IOException e) {
             Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting line data from HSL api! :(", e);
             return null;
         }
-        return lines;
-    }
-    
-    @Override
-    public Line getLine(String lineCode) {
-        return getLines(lineCode).get(0);
-    }
-    
-    @Override
-    public Line getLine(LineInfo lineInfo) {
-        return getLine(lineInfo.getLineCode());
-    }
-
-    @Override
-    public List<Line> getLines(List<LineInfo> lineinfos) {
-        List<Line> lines;
-        String lineQuery = "";
         
-        for (LineInfo lineinfo : lineinfos) {
-            lineQuery += lineinfo.getLineCode() + "|";
-        }
-        
-        lineQuery = lineQuery.substring(0, lineQuery.length()-1);
-        
-        lines = getLines(lineQuery);
-        
-        return lines;
+        return lines.get(0);
     }
 }

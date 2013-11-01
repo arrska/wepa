@@ -1,3 +1,4 @@
-[_] cache
+[x] cache
 [_] database (sqlite?)
 [_] internationalization
+[_] transactions

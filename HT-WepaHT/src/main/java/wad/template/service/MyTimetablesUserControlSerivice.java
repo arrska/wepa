@@ -60,12 +60,14 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void changePassword(SiteUser authenticatedUser, String password1) {
         authenticatedUser.setPassword(password1);
         userRepo.save(authenticatedUser);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SiteUser findUserByApiKey(String apikey) {
         return userRepo.findOneByApikey(apikey);
     }

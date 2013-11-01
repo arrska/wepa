@@ -11,20 +11,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import wad.template.domain.SiteUser;
 import wad.template.domain.Stop;
 import wad.template.service.ApiAuthenticationService;
-import wad.template.service.FavouriteService;
+import wad.template.service.StopService;
 import wad.template.service.TimetableService;
 
 @Controller
 @RequestMapping(value = "api/")
 public class JsonAPIController {
     @Autowired
-    TimetableService timetableService;
+    private TimetableService timetableService;
+    
+//    @Autowired
+//    private FavouriteService<Stop> favouriteService;
+    @Autowired
+    private StopService stopService;
     
     @Autowired
-    FavouriteService<Stop> favouriteService;
-    
-    @Autowired
-    ApiAuthenticationService apiAuthenticationService;
+    private ApiAuthenticationService apiAuthenticationService;
     
     @RequestMapping(value = "stops", method=RequestMethod.GET)
     @ResponseBody
@@ -35,8 +37,9 @@ public class JsonAPIController {
     
     @RequestMapping(value = "stop/{stopCode}", method=RequestMethod.GET)
     @ResponseBody
-    public Stop stopInfo(@RequestParam(value = "apikey") String apiKey, @PathVariable(value = "stopCode") String stopCode) throws Exception {
+    public Stop stopInfo(@RequestParam(value = "apikey") String apiKey, @PathVariable(value = "stopCode") Integer stopCode) throws Exception {
         apiAuthenticationService.authenticate(apiKey);
-        return timetableService.getStop(Integer.parseInt(stopCode), true);
+        return stopService.getStop(stopCode);
+        //return timetableService.getStop(Integer.parseInt(stopCode), true);
     }
 }

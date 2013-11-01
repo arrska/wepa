@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wad.template.domain.SiteUser;
 import wad.template.repository.UserRepository;
 
@@ -19,8 +20,8 @@ public class MyTimetablesAuthenticationService implements AuthenticationProvider
     @Autowired
     UserRepository userRepo;
     
-    
     @Override
+    @Transactional(readOnly = true)
     public Authentication authenticate(Authentication a) throws AuthenticationException {
         String username = a.getName();
         String password = a.getCredentials().toString();

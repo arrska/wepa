@@ -13,7 +13,7 @@
         <c:if test="${empty stops}">
             ei pysäkkejä
         </c:if>
-        <c:if test="${empty stops}">
+        <c:if test="${not empty stops}">
             <ul>
                 <c:forEach var="stop" items="${stops}">
                     <li>

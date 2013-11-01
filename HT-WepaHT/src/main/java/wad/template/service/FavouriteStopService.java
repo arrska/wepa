@@ -27,6 +27,7 @@ public class FavouriteStopService implements FavouriteService<Stop> {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Boolean isFavourite(SiteUser user, Stop stop) {
         if (user == null) return false;
         if (stop == null) return false;
