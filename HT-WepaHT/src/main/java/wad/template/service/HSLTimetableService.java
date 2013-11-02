@@ -1,21 +1,21 @@
 package wad.template.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import wad.template.domain.Line;
+import wad.template.domain.LineList;
 import wad.template.domain.Stop;
+import wad.template.domain.StopList;
 
 @Service
 public class HSLTimetableService implements TimetableService {
@@ -28,9 +28,20 @@ public class HSLTimetableService implements TimetableService {
     private String tokenPass;
     
     private ObjectMapper HSLStopMapper;
+    private RestTemplate restTemplate;
     
     @PostConstruct
     private void init() {
+        restTemplate = new RestTemplate();
+        MappingJackson2HttpMessageConverter mjhmc = new MappingJackson2HttpMessageConverter();
+        List<MediaType> mediaTypes = new ArrayList<MediaType>();
+        mediaTypes.add(MediaType.TEXT_PLAIN);
+        mjhmc.setSupportedMediaTypes(mediaTypes);
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        
+        messageConverters.add(mjhmc);
+        restTemplate.setMessageConverters(messageConverters);
+        
         if (token == null) token = "";
         if (tokenPass == null) tokenPass = "";
         HSLStopMapper = new ObjectMapper();
@@ -74,76 +85,57 @@ public class HSLTimetableService implements TimetableService {
         return "unknown";
     }
     
-    private String stopSearchQuery (String query, Date time, Integer time_limit, Integer dep_limit) {
-        String params =   
-                  "&code=%1$s"
-                + "&date=%2$tY%2$tm%2$td"
-                + "&time=%2$tH%2$tM"
-                + "&time_limit=%3$d"
-                + "&dep_limit=%4$d";
-        String queryString;
-        
-        queryString = 
-                String.format(apiUrl, token, tokenPass, "stop") +
-                String.format(params, query, time, time_limit, dep_limit);
-        
-        return queryString;
+    private String stopSearchUrl (String query, Date time, Integer time_limit, Integer dep_limit) {
+            String paramFormat =
+                    "&code=%1$s"
+                    + "&date=%2$tY%2$tm%2$td"
+                    + "&time=%2$tH%2$tM"
+                    + "&time_limit=%3$d"
+                    + "&dep_limit=%4$d";
+            String queryURL;
+            
+            queryURL =
+                    String.format(apiUrl, token, tokenPass, "stop") +
+                    String.format(paramFormat, query, time, time_limit, dep_limit);
+            
+            return queryURL;
+    }
+    
+    private String lineGetUrl (String query) {
+            String paramFormat = "&query=%1$s";
+            String queryURL;
+            
+            queryURL =
+                    String.format(apiUrl, token, tokenPass, "lines") +
+                    String.format(paramFormat, query);
+            
+            return queryURL;
     }
     
     @Override
     @Cacheable(value ="stops")
     public Stop getStop(Integer stopCode) {
-        Logger.getLogger(HSLTimetableService.class.getName()).log(Level.INFO, ("getting single stop indo of stop " + stopCode + " from HSLapi"));
         return findStops(stopCode.toString()).get(0);
     }
     
     @Cacheable(value ="stops")
     @Override
     public List<Stop> findStops(String query) {
-        URL requestUrl;
-        List<Stop> stops;
-        
-        try {
-            requestUrl = new URL(stopSearchQuery(query, new Date(), 360, 10));
-            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.INFO, ("searching for stops with query " + query + " from HSLapi"));
-            stops = HSLStopMapper.readValue(requestUrl, new TypeReference<List<Stop>>() {});
-        } catch (IOException e) {
-            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting stops from HSL api! :(", e);
-            return null;
-        }
-        
+        System.out.println("getting stops with query \"" + query + "\" from HSLapi");
+        String searchUrl = stopSearchUrl(query, new Date(), 360, 10);
+        List<Stop> stops = restTemplate.getForObject(searchUrl, StopList.class);
         return stops;
     }
     
     @Override
     @Cacheable(value ="lines")
     public Line getLine(String lineCode) {
-        String queryString;
-        String encodedQuery;
+        System.out.println("getting line info of line " + lineCode + " from HSLapi");
+        String url = lineGetUrl(lineCode);
         
-        try {
-            encodedQuery = URLEncoder.encode(lineCode, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "epic no UTF-8 exception when urlencoding", ex);
+        List<Line> lines = restTemplate.getForObject(url, LineList.class);
+        if (lines == null)
             return null;
-        }
-        
-        queryString = 
-                String.format(apiUrl, token, tokenPass, "lines") +
-                String.format("&query=%1$s", encodedQuery);
-        
-        URL requestUrl;
-        List<Line> lines;
-        
-        try {
-            requestUrl = new URL(queryString);
-            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.INFO, ("getting line info of line " + lineCode + " from HSLapi"));
-            lines = HSLStopMapper.readValue(requestUrl, new TypeReference<List<Line>>() {});
-        } catch (IOException e) {
-            Logger.getLogger(HSLTimetableService.class.getName()).log(Level.SEVERE, "Error when getting line data from HSL api! :(", e);
-            return null;
-        }
-        
         return lines.get(0);
     }
 }
