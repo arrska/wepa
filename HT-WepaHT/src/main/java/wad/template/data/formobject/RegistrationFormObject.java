@@ -2,7 +2,7 @@ package wad.template.data.formobject;
 
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 
 public class RegistrationFormObject {
     @Pattern(regexp = "[a-zA-Z0-9]*", message = "Only characters a-z and digits 0-9")
@@ -39,8 +39,8 @@ public class RegistrationFormObject {
         this.password2 = password2;
     }
     
-    public SiteUser makeUser() {
-        SiteUser user = new SiteUser();
+    public User makeUser() {
+        User user = new User();
         user.setName(username);
         user.setPassword(password1);
         

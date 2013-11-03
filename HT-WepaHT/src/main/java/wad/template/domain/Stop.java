@@ -3,86 +3,37 @@ package wad.template.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import wad.template.data.deseriaizer.CoordinateDeserializer;
 import wad.template.data.deseriaizer.LineInfoDeserializer;
+import wad.template.data.jsonview.JsonViews;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Entity
-@Table(name = "stops")
-public class Stop implements Serializable {
-    @Id
-    @Column(name = "stopcode")
+public class Stop {
     @JsonProperty("code")
     private Integer code;
     
     @JsonProperty("code_short")
-    @Column(name = "shortcode")
     private String shortCode;
-    
-    @JsonProperty("name_fi")
-    @Column(name = "name")
     private String name;
-    
-    @JsonProperty("name_sv")
-    @Transient
-    private String nameSv;
-    
-    @JsonProperty("city_fi")
-    @Transient
-    private String city;
-    
-    @JsonProperty("city_sv")
-    @Transient
-    private String citySv;
-
-    @JsonProperty("wgs_coords")
-    @Transient
-    private Coordinates coordinates;
-
-    @JsonProperty("timetable_link")
-    @Transient
-    private String timetableLink;
-    
-    @JsonProperty("address_fi")
     private String address;
-    
-    @JsonProperty("address_sv")
-    @Transient
-    private String addressSv;
-    
-    @JsonProperty("departures")
-    @Transient
+    private String city;
+    private Coordinates coordinates;
     private List<Departure> departures;
-    
-    @JsonProperty("lines")
-    @Transient
     private List<LineInfo> lineInfos;
     
-    @Transient
-    @JsonProperty("lines")
+    @JsonIgnore
     private List<Line> lines;
     
-    @JsonIgnore
-    @ManyToMany(mappedBy ="favouriteStops")
-    private List<SiteUser> favouritedBy;
-
-    public Stop() {
-    }
-
-    @JsonIgnore
+    @JsonProperty("lines")
+    @JsonView(JsonViews.DefaultStopView.DetailedStopView.class)
     public List<LineInfo> getLineInfos() {
         return lineInfos;
     }
 
+    @JsonProperty("lines")
     @JsonDeserialize(using = LineInfoDeserializer.class)
     public void setLineInfos(List<LineInfo> lineInfos) {
         this.lineInfos = lineInfos;
@@ -92,36 +43,33 @@ public class Stop implements Serializable {
         return lines;
     }
 
-    @JsonIgnore
     public void setLines(List<Line> lines) {
         this.lines = lines;
     }
-
-    public List<SiteUser> getFavouritedBy() {
-        return favouritedBy;
-    }
-
-    public void setFavouritedBy(List<SiteUser> favouritedBy) {
-        this.favouritedBy = favouritedBy;
-    }
     
+    @JsonProperty("coordinates")
+    @JsonView(JsonViews.DefaultStopView.class)
     public Coordinates getCoordinates() {
         return coordinates;
     }
-
+    
+    @JsonProperty("wgs_coords")
     @JsonDeserialize(using = CoordinateDeserializer.class)
-    public void setCoordinates(Coordinates coordinates) {
+    public void setwgsCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 
+    @JsonView(JsonViews.DefaultStopView.DetailedStopView.class)
     public List<Departure> getDepartures() {
         return departures;
     }
 
+    @JsonProperty("departures")
     public void setDepartures(List<Departure> departures) {
         this.departures = departures;
     }
 
+    @JsonView(JsonViews.DefaultStopView.class)
     public Integer getCode() {
         return code;
     }
@@ -130,6 +78,7 @@ public class Stop implements Serializable {
         this.code = code;
     }
 
+    @JsonView(JsonViews.DefaultStopView.class)
     public String getShortCode() {
         return shortCode;
     }
@@ -138,82 +87,36 @@ public class Stop implements Serializable {
         this.shortCode = shortCode;
     }
 
+    @JsonProperty("name")
+    @JsonView(JsonViews.DefaultStopView.class)
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    @JsonProperty("name_fi")
+    public void setNameFi(String name) {
         this.name = name;
     }
 
-
-    public String getNameSv() {
-        return nameSv;
-    }
-
-    public void setNameSv(String nameSv) {
-        this.nameSv = nameSv;
-    }
-
+    @JsonProperty("city")
+    @JsonView(JsonViews.DefaultStopView.class)
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    @JsonProperty("city_fi")
+    public void setCityFi(String city) {
         this.city = city;
     }
-    
 
-    public String getCitySv() {
-        return citySv;
-    }
-
-    public void setCitySv(String citySv) {
-        this.citySv = citySv;
-    }
-    
-    public String getTimetableLink() {
-        return timetableLink;
-    }
-
-    public void setTimetableLink(String timetableLink) {
-        this.timetableLink = timetableLink;
-    }
-
+    @JsonProperty("address")
+    @JsonView(JsonViews.DefaultStopView.class)
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    @JsonProperty("address_fi")
+    public void setAddressFi(String address) {
         this.address = address;
     }
-
-    public String getAddressSv() {
-        return addressSv;
-    }
-
-    public void setAddressSv(String addressSv) {
-        this.addressSv = addressSv;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.code;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Stop other = (Stop) obj;
-        if (this.code != other.code && (this.code == null || !this.code.equals(other.code))) {
-            return false;
-        }
-        return true;
-    }
-
 }

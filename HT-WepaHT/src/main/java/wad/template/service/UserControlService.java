@@ -1,16 +1,16 @@
 package wad.template.service;
 
 import java.util.List;
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 
 public interface UserControlService {
-    public SiteUser newUser(SiteUser user) throws Exception;
-    public SiteUser findUser(String username);
-    public SiteUser findUserByApiKey(String apikey);
-    public SiteUser getAuthenticatedUser();
-    public List<SiteUser> getUsers();
+    public User newUser(User user) throws Exception;
+    public User findUser(String username);
+    public User findUserByApiKey(String apikey);
+    public User getAuthenticatedUser();
+    public List<User> getUsers();
     public void deleteUser(String username);
     public boolean isAuthenticated();
 
-    public void changePassword(SiteUser authenticatedUser, String password1);
+    public void changePassword(User authenticatedUser, String password1);
 }

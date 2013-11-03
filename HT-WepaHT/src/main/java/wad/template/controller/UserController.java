@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wad.template.data.formobject.RegistrationFormObject;
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 import wad.template.service.UserControlService;
 
 @Controller
@@ -39,7 +39,7 @@ public class UserController {
             return "register";
         }
         
-        SiteUser user = regForm.makeUser();
+        User user = regForm.makeUser();
         
         try {
             userControlService.newUser(user);
@@ -81,6 +81,7 @@ public class UserController {
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes) {
+        
         model.addAttribute("apikey", userControlService.getAuthenticatedUser().getApikey());
                 
         if (!passwdForm.getPassword1().equals(passwdForm.getPassword2())) {
@@ -99,7 +100,7 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="user/{username}", method = RequestMethod.DELETE)
     public String deleteUser(@PathVariable(value = "username") String username, RedirectAttributes redirectAttributes) {
-        SiteUser authenticatedUser = userControlService.getAuthenticatedUser();
+        User authenticatedUser = userControlService.getAuthenticatedUser();
         
         if (username.equals(authenticatedUser.getName())) {
             userControlService.deleteUser(username);

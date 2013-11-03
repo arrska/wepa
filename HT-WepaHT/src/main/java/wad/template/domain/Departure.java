@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 
 public class Departure {
-    @JsonProperty("code")
     private String lineCode;
     
     @JsonIgnore
@@ -34,11 +33,13 @@ public class Departure {
         this.line = line;
     }
     
+    @JsonProperty("linecode")
     public String getLineCode() {
         return lineCode;
     }
 
-    public void setLineCode(String lineCode) {
+    @JsonProperty("code")
+    public void setLinecode(String lineCode) {
         this.lineCode = lineCode;
     }
 

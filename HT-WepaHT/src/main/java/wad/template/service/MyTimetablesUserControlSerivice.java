@@ -2,12 +2,13 @@ package wad.template.service;
 
 import java.util.List;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 import wad.template.repository.UserRepository;
 
 @Service
@@ -15,9 +16,20 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
     @Autowired
     private UserRepository userRepo;
     
+    
+    @PostConstruct
+    private void init() {
+        User u = new User();
+        u.setName("aaro");
+        u.setApikey("apikk");
+        u.setPassword("passus");
+        
+        userRepo.save(u);
+    }
+    
     @Override
     @Transactional(readOnly = false)
-    public SiteUser newUser(SiteUser user) throws Exception {
+    public User newUser(User user) throws Exception {
         if (userRepo.findOne(user.getName()) != null) {
             throw new Exception("Username taken!");
         }
@@ -29,7 +41,7 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
 
     @Override
     @Transactional(readOnly = true)
-    public SiteUser findUser(String username) {
+    public User findUser(String username) {
         return userRepo.findOne(username);
     }
 
@@ -42,13 +54,13 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SiteUser> getUsers() {
-        return (List<SiteUser>) userRepo.findAll();
+    public List<User> getUsers() {
+        return (List<User>) userRepo.findAll();
     }
     
     @Override
     @Transactional(readOnly = true)
-    public SiteUser getAuthenticatedUser() {
+    public User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return this.findUser(auth.getName());
     }
@@ -61,14 +73,14 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
 
     @Override
     @Transactional(readOnly = false)
-    public void changePassword(SiteUser authenticatedUser, String password1) {
+    public void changePassword(User authenticatedUser, String password1) {
         authenticatedUser.setPassword(password1);
         userRepo.save(authenticatedUser);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public SiteUser findUserByApiKey(String apikey) {
+    public User findUserByApiKey(String apikey) {
         return userRepo.findOneByApikey(apikey);
     }
 }

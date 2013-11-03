@@ -12,7 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 import wad.template.repository.UserRepository;
 
 @Service
@@ -26,7 +26,7 @@ public class MyTimetablesAuthenticationService implements AuthenticationProvider
         String username = a.getName();
         String password = a.getCredentials().toString();
         
-        SiteUser user = userRepo.findOne(username);
+        User user = userRepo.findOne(username);
         if (user != null && user.getPassword().equals(password)) {
             List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
             

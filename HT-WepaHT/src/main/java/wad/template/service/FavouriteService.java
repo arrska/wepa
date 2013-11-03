@@ -1,9 +1,9 @@
 package wad.template.service;
 
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 
 public interface FavouriteService<T> {
-    public void favourite(SiteUser user, T favouritable);
-    public void unfavourite(SiteUser user, T favouritable);
-    public Boolean isFavourite(SiteUser user, T favouritable);
+    public void favourite(User user, T favouritable);
+    public void unfavourite(User user, T favouritable);
+    public Boolean isFavourite(User user, T favouritable);
 }

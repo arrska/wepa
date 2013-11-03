@@ -1,5 +1,6 @@
 package wad.template.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import wad.template.data.formobject.StopSearchFormObject;
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 import wad.template.domain.Stop;
 import wad.template.service.FavouriteService;
 import wad.template.service.StopService;
@@ -21,9 +22,6 @@ import wad.template.service.UserControlService;
 
 @Controller
 public class StopController {
-//    @Autowired
-//    private TimetableService timetableService;
-    
     @Autowired
     private StopService stopService;
     
@@ -46,7 +44,6 @@ public class StopController {
             return "stop/stopsearch";
         }
         
-        //List<Stop> stops = timetableService.getStops(searchForm.getQuery(), true);
         List<Stop> stops = stopService.searchStop(searchForm.getQuery());
         model.addAttribute("stops", stops);
         model.addAttribute("query", searchForm.getQuery());
@@ -55,7 +52,7 @@ public class StopController {
     
     @RequestMapping(value="stop/{stopcode}", method=RequestMethod.GET)
     public String stopInfo(@PathVariable(value = "stopcode") Integer stopCode, Model model) {
-        Stop stop = stopService.getStop(stopCode); //timetableService.getStop(stopCode, true);
+        Stop stop = stopService.getStop(stopCode);
         
         boolean favourite = favService.isFavourite(userControlService.getAuthenticatedUser(), stop);
         
@@ -69,24 +66,20 @@ public class StopController {
     @RequestMapping(value="stop", method=RequestMethod.GET)
     @PreAuthorize("isAuthenticated()")
     public String myStops(Model model) {
-        try {
-            List<Stop> stops = userControlService.getAuthenticatedUser().getFavouriteStops();
+            User user = userControlService.getAuthenticatedUser();
+            List<Integer> stopcodes = user.getFavouriteStops();
+
+            List<Stop> stops = stopService.getStops(stopcodes);
+            
             model.addAttribute("stops", stops);
-        } catch (Exception e) {}
         
         return "stop/stoplist";
     }
     
-    /*@RequestMapping(value="stop/{stopcode}/coordinates", method=RequestMethod.GET)
-    @ResponseBody
-    public Coordinates stopCoordinates(@PathVariable(value = "stopcode") Integer stopCode) {
-        return timetableService.getStop(stopCode, false).getCoordinates();
-    }*/
-    
     @RequestMapping(value = "stop/{stopCode}/favourite", method=RequestMethod.POST)
     public String addFavourite(@PathVariable(value = "stopCode") Integer stopCode) {
         Stop stop = stopService.getStop(stopCode);
-        SiteUser user = userControlService.getAuthenticatedUser();
+        User user = userControlService.getAuthenticatedUser();
         favService.favourite(user, stop);
         return "redirect:/app/stop";
     }
@@ -94,7 +87,7 @@ public class StopController {
     @RequestMapping(value = "stop/{stopCode}/unfavourite", method=RequestMethod.POST)
     public String removeFavourite(@PathVariable(value = "stopCode") Integer stopCode) {
         Stop stop = stopService.getStop(stopCode);
-        SiteUser user = userControlService.getAuthenticatedUser();
+        User user = userControlService.getAuthenticatedUser();
         favService.unfavourite(user, stop);
         return "redirect:/app/stop";
     }

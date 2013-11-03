@@ -1,19 +1,18 @@
 package wad.template.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class SiteUser implements Serializable {
+public class User implements Serializable {
     @Id
     @Column(name = "username")
     private String name;
@@ -22,11 +21,10 @@ public class SiteUser implements Serializable {
     @Column(name = "apikey")
     private String apikey;
     
-    @ManyToMany
-    @JoinTable(name = "favourite_stops",
-        joinColumns = @JoinColumn(name = "username"),
-        inverseJoinColumns=@JoinColumn(name="stopcode"))
-    private List<Stop> favouriteStops;
+    @ElementCollection
+    @CollectionTable(name = "favouritestops", joinColumns = @JoinColumn(name = "username"))
+    @Column(name="stopcode")
+    private List<Integer> favouriteStops;
 
     public String getName() {
         return name;
@@ -44,21 +42,11 @@ public class SiteUser implements Serializable {
         this.password = password;
     }
 
-    public List<Stop> getFavouriteStops() {
+    public List<Integer> getFavouriteStops() {
         return favouriteStops;
     }
-    
-    public List<Integer> getFavouriteStopcodes() {
-        if (favouriteStops == null) return null;
-        List<Integer> codes = new ArrayList<Integer>();
-        
-        for (Stop stop : favouriteStops) {
-            codes.add(stop.getCode());
-        }
-        return codes;
-    }
 
-    public void setFavouriteStops(List<Stop> favouriteStops) {
+    public void setFavouriteStops(List<Integer> favouriteStops) {
         this.favouriteStops = favouriteStops;
     }
 

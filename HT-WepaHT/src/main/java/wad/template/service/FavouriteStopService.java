@@ -3,7 +3,7 @@ package wad.template.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wad.template.domain.SiteUser;
+import wad.template.domain.User;
 import wad.template.domain.Stop;
 import wad.template.repository.UserRepository;
 
@@ -14,25 +14,25 @@ public class FavouriteStopService implements FavouriteService<Stop> {
     
     @Override
     @Transactional(readOnly = false)
-    public void favourite(SiteUser user, Stop stop) {
-        user.getFavouriteStops().add(stop);
+    public void favourite(User user, Stop stop) {
+        user.getFavouriteStops().add(stop.getCode());
         userRepo.save(user);
     }
 
     @Override
     @Transactional(readOnly = false)
-    public void unfavourite(SiteUser user, Stop stop) {
-        user.getFavouriteStops().remove(stop);
+    public void unfavourite(User user, Stop stop) {
+        user.getFavouriteStops().remove(stop.getCode());
         userRepo.save(user);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Boolean isFavourite(SiteUser user, Stop stop) {
+    public Boolean isFavourite(User user, Stop stop) {
         if (user == null) return false;
         if (stop == null) return false;
-        if (user.getFavouriteStopcodes() == null) return false;
-        return user.getFavouriteStops().contains(stop);
+        if (user.getFavouriteStops() == null) return false;
+        return user.getFavouriteStops().contains(stop.getCode());
     }
     
 }

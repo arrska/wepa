@@ -12,16 +12,16 @@
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>${username}</h1>
-        api key: <b> ${apikey} </b>
-        <br />
-        delete user<br />
         <form:form action="${pageContext.request.contextPath}/app/user/${username}" method="DELETE">
             <button type="submit">delete user</button>
         </form:form>
         <br />
+        api key: <b> ${apikey} </b>
+        <br />
         <br />
         <form:form commandName="passwdForm" action="${pageContext.request.contextPath}/app/user/${username}" method="PUT">
             <table>
+                <caption>change password</caption>
                 <tbody>
                     <tr>
                         <td>new password:</td>

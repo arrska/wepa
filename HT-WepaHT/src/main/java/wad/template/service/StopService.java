@@ -37,6 +37,16 @@ public class StopService {
         return stop;
     }
     
+    public List<Stop> getStops(List<Integer> stopcodes) {
+        List<Stop> stops = new ArrayList<Stop>();
+
+        for (Integer stopcode : stopcodes) {
+            stops.add(this.getStop(stopcode));
+        }
+
+        return stops;
+    }
+    
     @Scheduled(fixedRate = 300000) //every 5 minutes
     @CacheEvict(value = "stops", allEntries = true)
     public void evictStopCache() {
