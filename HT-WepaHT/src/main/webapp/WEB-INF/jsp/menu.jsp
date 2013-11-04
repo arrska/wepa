@@ -10,7 +10,6 @@
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>HSL timetables</h1>
         
-        <a href="${pageContext.request.contextPath}/app/stop/search?q=patola">patola search</a><br />
         <a href="${pageContext.request.contextPath}/app/login">login</a><br />
         <a href="${pageContext.request.contextPath}/app/register">register</a><br />
         <a href="${pageContext.request.contextPath}/app/stop">mystops</a><br />
