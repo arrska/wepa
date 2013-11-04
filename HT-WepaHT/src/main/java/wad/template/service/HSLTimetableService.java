@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import wad.template.domain.Line;
@@ -27,7 +29,7 @@ public class HSLTimetableService implements TimetableService {
     @Value("${hslapi.pass}")
     private String tokenPass;
     
-    private ObjectMapper HSLStopMapper;
+    //private ObjectMapper HSLStopMapper;
     private RestTemplate restTemplate;
     
     @PostConstruct
@@ -44,7 +46,7 @@ public class HSLTimetableService implements TimetableService {
         
         if (token == null) token = "";
         if (tokenPass == null) tokenPass = "";
-        HSLStopMapper = new ObjectMapper();
+        //HSLStopMapper = new ObjectMapper();
     }
     
     public static String TransportType(Integer transportTypeId) {

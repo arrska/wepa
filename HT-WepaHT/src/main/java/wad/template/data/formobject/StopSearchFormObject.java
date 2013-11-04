@@ -1,12 +1,11 @@
 package wad.template.data.formobject;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 public class StopSearchFormObject {
     @Length(min = 3, max=40)
-    @Pattern(regexp = "(?ui)(\\p{ASCII}|[äöå])*", message="Only alphanumeric characters and some special characters")
+    @Pattern(regexp = "(?ui)([a-z0-9 ´`'\\(\\)-:,.]|[äöå])*", message="Only alphanumeric characters and some special characters")
     private String query;
 
     public String getQuery() {

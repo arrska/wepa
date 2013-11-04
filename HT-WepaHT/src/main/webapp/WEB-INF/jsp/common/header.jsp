@@ -5,14 +5,16 @@
     <sec:authorize access="isAuthenticated()" >
         <sec:authentication property="principal.username" var="username" />
         logged in as
-        <a href="${pageContext.request.contextPath}/app/user/${username}">
+        <a href="<c:url value="/app/user/${username}" />">
             ${username}
         </a>
     </sec:authorize>
+        
     <jsp:include page="nav.jsp" />
+    
     <c:if test="${not empty message}">
         <div class="messageblock">
-            ${message}
+            <c:out value="${message}" />
         </div>
     </c:if>
     

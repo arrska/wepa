@@ -6,16 +6,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css" type="text/css" />
-        <title>${stop.name} | stop information</title>
-        
+        <link rel="stylesheet" href="<c:url value="/style/style.css" />" type="text/css" />
+        <title><c:out value="${stop.name}" /> | stop information</title>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=${gmapikey}&sensor=true">
         </script>
         <script type="text/javascript">
             function initializeMap() {
-		var longtitude = document.getElementById('longtitude').innerHTML;
-                var longtitude = document.getElementById('latitude').innerHTML;
-                var stopinfo = document.getElementById('').innerHTML + ' (' + document.getElementById('').innerHTML + ')';
+                var longtitude = document.getElementById('longtitude').innerHTML;
+                var latitude = document.getElementById('latitude').innerHTML;
+                var stopinfo = document.getElementById('name').innerHTML + ' (' + document.getElementById('shortcode').innerHTML + ')';
 
                 var stop = new google.maps.LatLng(latitude, longtitude);
           
@@ -34,19 +33,35 @@
     </head>
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
+        
         <div class="hidden">
-		<span id="latitude">${stop.coordinates.latitude}</span>
-                <span id="longtitude">${stop.coordinates.longitude}</span>
-                <span id="name">${stop.name}</span>
-                <span id="shortcode">${stop.shortCode}</span>
-	</div>
-	<h1>Stop info</h1>
-        <h2>${stop.name} <c:if test="${not empty stop.shortCode}">(${stop.shortCode})</c:if></h2>
-            
+            <span id="latitude">
+                <c:out value="${stop.coordinates.latitude}" />
+            </span>
+            <span id="longtitude">
+                <c:out value="${stop.coordinates.longtitude}" />
+            </span>
+            <span id="name">
+                <c:out value="${stop.name}" />
+            </span>
+            <span id="shortcode">
+                <c:out value="${stop.shortCode}" />
+            </span>
+        </div>
+        
+        
+        <h1>Stop info</h1>
+        <h2>
+            <c:out value="${stop.name}" />
+            <c:if test="${not empty stop.shortCode}">
+                (<c:out value="${stop.shortCode}" />)
+            </c:if>
+        </h2>
+        
         <sec:authorize access="isAuthenticated()">
             <h3>
                 <c:if test="${!favourite}">
-                    <form action="${pageContext.request.contextPath}/app/stop/${stop.code}/favourite" method="post">
+                    <form action="<c:url value="/app/stop/${stop.code}/favourite" />" method="post">
                         <button type="submit">
                             lisää suosikkeihin
                         </button>
@@ -54,7 +69,7 @@
                 </c:if>
                 
                 <c:if test="${favourite}">
-                    <form action="${pageContext.request.contextPath}/app/stop/${stop.code}/unfavourite" method="post">
+                    <form action="<c:url value="/app/stop/${stop.code}/unfavourite" />" method="post">
                         <button type="submit">
                             poista suosikeista
                         </button>
@@ -84,32 +99,32 @@
                                 ${status.count}
                             </td>
                             <td>
-                                <a href="${pageContext.request.contextPath}/app/line/${depa.line.code}/">
-                                    ${depa.line.shortCode}
+                                <a href="<c:url value="/app/line/${depa.line.code}/" />">
+                                    <c:out value="${depa.line.shortCode}" />
                                 </a>
                             </td>
                             <td>
-                                ${depa.line.transportTypeName}
+                                <c:out value="${depa.line.transportTypeName}" />
                             </td>
                             <td>
-                                ${depa.line.end}
+                                <c:out value="${depa.line.end}" />
                             </td>
                             <td>
                                 <fmt:formatDate value="${depa.datetime}" type="time" pattern="HH:mm" />
                             </td>
                             <td>
-                                ${depa.minutesUntil}
+                                <c:out value="${depa.minutesUntil}" />
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </c:if>
             <c:if test="${empty stop.departures}">
-                    <tbody>
-                        <tr>
-                            <td>no departures in 6 hours</td>
-                        </tr>
-                    </tbody>
+                <tbody>
+                    <tr>
+                        <td>no departures in 6 hours</td>
+                    </tr>
+                </tbody>
             </c:if>
         </table>
         
@@ -134,15 +149,15 @@
                                 ${status.count}
                             </td>
                             <td>
-                                <a href="${pageContext.request.contextPath}/app/line/${line.code}/">
-                                    ${line.shortCode}
+                                <a href="<c:url value="/app/line/${line.code}/" />">
+                                    <c:out value="${line.shortCode}" />
                                 </a>
                             </td>
                             <td>
-                                ${line.start}
+                                <c:out value="${line.start}" />
                             </td>
                             <td>
-                                ${line.end}
+                                <c:out value="${line.end}" />
                             </td>
                         </tr>
                     </c:forEach>

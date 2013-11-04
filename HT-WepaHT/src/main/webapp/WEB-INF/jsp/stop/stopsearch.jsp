@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css" type="text/css" />
+        <link rel="stylesheet" href="<c:url value="/style/style.css" />" type="text/css" />
         <title>Stop search</title>
     </head>
     <body>
@@ -19,7 +19,7 @@
         </form:form>
         
         <c:if test="${not empty stops}">
-            <h2>Search results for "${query}":</h2>
+            <h2>Search results for "<c:out value="${query}" />":</h2>
             
             <table>
                 <thead>
@@ -30,18 +30,18 @@
                         <th>code</th>
                     </tr>
                 </thead>
-            <c:forEach var="stop" items="${stops}" varStatus="status">
+                <c:forEach var="stop" items="${stops}" varStatus="status">
                     <tr>
                         <td>${status.count}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/app/stop/${stop.code}">
-                                ${stop.name}
+                            <a href="<c:url value="/app/stop/${stop.code}" />">
+                                <c:out value="${stop.name}" />
                             </a>
                         </td>
-                        <td>${stop.address}</td>
-                        <td>${stop.shortCode}</td>
+                        <td><c:out value="${stop.address}" /></td>
+                        <td><c:out value="${stop.shortCode}" /></td>
                     </tr>
-            </c:forEach>
+                </c:forEach>
             </table>
         </c:if>
     </body>

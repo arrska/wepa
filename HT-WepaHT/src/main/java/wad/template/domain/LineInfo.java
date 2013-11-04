@@ -20,6 +20,4 @@ public class LineInfo {
     public void setDestination(String destination) {
         this.destination = destination;
     }
-    
-    
 }

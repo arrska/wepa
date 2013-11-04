@@ -6,20 +6,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/style/style.css" type="text/css" />
+        <link rel="stylesheet" href="<c:url value="/style/style.css" />" type="text/css" />
         <title>${username} | user details</title>
     </head>
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>${username}</h1>
-        <form:form action="${pageContext.request.contextPath}/app/user/${username}" method="DELETE">
+        
+        <c:url value="/app/user/${username}" var="formAction" />
+        <form:form action="${formAction}" method="DELETE">
             <button type="submit">delete user</button>
         </form:form>
         <br />
         api key: <b> ${apikey} </b>
         <br />
         <br />
-        <form:form commandName="passwdForm" action="${pageContext.request.contextPath}/app/user/${username}" method="PUT">
+        <form:form commandName="passwdForm" action="${formAction}" method="PUT">
             <table>
                 <caption>change password</caption>
                 <tbody>
