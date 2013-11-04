@@ -20,3 +20,7 @@ table, td, tbody, table caption {
 .errorblock {
     border: 2px solid red;
 }
+
+.hidden {
+    display: none;
+}

@@ -13,8 +13,11 @@
         </script>
         <script type="text/javascript">
             function initializeMap() {
-                var stop = new google.maps.LatLng(${stop.coordinates.latitude}, ${stop.coordinates.longtitude});
-                var stopinfo = '${stop.name} (${stop.code})';
+		var longtitude = document.getElementById('longtitude').innerHTML;
+                var longtitude = document.getElementById('latitude').innerHTML;
+                var stopinfo = document.getElementById('').innerHTML + ' (' + document.getElementById('').innerHTML + ')';
+
+                var stop = new google.maps.LatLng(latitude, longtitude);
           
                 var mapOptions = {
                     center: stop,
@@ -31,7 +34,13 @@
     </head>
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
-        <h1>Stop info</h1>
+        <div class="hidden">
+		<span id="latitude">${stop.coordinates.latitude}</span>
+                <span id="longtitude">${stop.coordinates.longitude}</span>
+                <span id="name">${stop.name}</span>
+                <span id="shortcode">${stop.shortCode}</span>
+	</div>
+	<h1>Stop info</h1>
         <h2>${stop.name} <c:if test="${not empty stop.shortCode}">(${stop.shortCode})</c:if></h2>
             
         <sec:authorize access="isAuthenticated()">
