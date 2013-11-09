@@ -19,12 +19,12 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
     
     @PostConstruct
     private void init() {
-        User u = new User();
-        u.setName("aaro");
-        u.setApikey("apikk");
-        u.setPassword("passus");
-        
-        userRepo.save(u);
+//        User u = new User();
+//        u.setName("aaro");
+//        u.setApikey("apikk");
+//        u.setPassword("passus");
+//        
+//        userRepo.save(u);
     }
     
     @Override
@@ -34,7 +34,11 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
             throw new Exception("Username taken!");
         }
         
-        user.setApikey(UUID.randomUUID().toString());
+        String apikey;
+        do {
+            apikey = UUID.randomUUID().toString();
+        } while (userRepo.findOneByApikey(apikey) != null);
+        user.setApikey(apikey);
         
         return userRepo.save(user);
     }

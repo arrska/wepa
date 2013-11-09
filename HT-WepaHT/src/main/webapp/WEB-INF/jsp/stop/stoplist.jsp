@@ -5,13 +5,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="<c:url value="/style/style.css" />" type="text/css" />
-        <title>Pysäkkilista</title>
+        <title>My stops</title>
     </head>
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
-        <h1>Pysäkit</h1>
+        <h1>My stops</h1>
         <c:if test="${empty stops}">
-            ei pysäkkejä
+            no favourited stops
         </c:if>
         <c:if test="${not empty stops}">
             <ul>

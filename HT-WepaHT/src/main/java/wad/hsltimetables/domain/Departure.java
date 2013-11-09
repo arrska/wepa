@@ -75,6 +75,7 @@ public class Departure {
     }
     
     @JsonIgnore
+    //whole minutes
     public Integer getMinutesUntil() {
         return Minutes.minutesBetween(new DateTime(), new DateTime(getDatetime())).getMinutes();
     }

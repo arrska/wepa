@@ -4,10 +4,10 @@
 <nav>
     <ul>
         <li>
-            <a href="<c:url value="/app/" />">etusivu</a>
+            <a href="<c:url value="/app/" />">first page</a>
         </li>
         <li>
-            <a href="<c:url value="/app/stop/search" />">haku</a>
+            <a href="<c:url value="/app/stop/search" />">search</a>
         </li>
         <sec:authorize access="isAuthenticated()">
             <li>
@@ -15,12 +15,12 @@
             </li>    
                 
             <li>
-                <a href="<c:url value="/j_spring_security_logout" />" >Logout</a>
+                <a href="<c:url value="/j_spring_security_logout" />" >logout</a>
             </li>
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">
             <li>
-                <a href="<c:url value="/app/login" />" >Login</a>
+                <a href="<c:url value="/app/login" />" >login</a>
             </li>
         </sec:authorize>
     </ul>

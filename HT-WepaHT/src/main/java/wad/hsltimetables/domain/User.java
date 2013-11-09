@@ -16,9 +16,11 @@ public class User implements Serializable {
     @Id
     @Column(name = "username")
     private String name;
+    
     @Column(name = "password")
     private String password;
-    @Column(name = "apikey")
+    
+    @Column(name = "apikey", unique = true)
     private String apikey;
     
     @ElementCollection

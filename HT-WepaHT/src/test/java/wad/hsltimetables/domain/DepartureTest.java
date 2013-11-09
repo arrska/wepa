@@ -1,6 +1,5 @@
 package wad.hsltimetables.domain;
 
-import wad.hsltimetables.domain.Departure;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,10 +51,8 @@ public class DepartureTest {
     }
     
     @Test
-    public void testGetMinutesUntilWorksWithProperInput() {
+    public void testGetMinutesUntilWorksWhenDepartureTimeIsNow() {
         Date now = new Date();
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(now);
         String hhmm = new SimpleDateFormat("HHmm").format(now);
         String yyyymmdd = new SimpleDateFormat("yyyyMMdd").format(now);
         
@@ -65,5 +62,66 @@ public class DepartureTest {
         Integer mins = departure.getMinutesUntil();
         
         assertEquals("from now to now is 0 minutes", new Integer(0), mins);
+    }
+    
+    @Test
+    public void testGetMinutesUntilWorksWhenDepartureTimeWasBeforeNow() {
+        String hhmm = "0000";
+        String yyyymmdd = "20120530";
+        
+        departure.setTime(hhmm);
+        departure.setDate(yyyymmdd);
+        
+        Integer mins = departure.getMinutesUntil();
+        
+        assertTrue("should be negative", mins < 0);
+    }
+    
+    @Test
+    public void testGetMinutesUntilWorksWhenDepartureTimeIsInFuture() {
+        Date now = new Date();
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(now);
+        String hhmm = "0000";
+        String yyyymmdd = Integer.toString(cal.get(Calendar.YEAR) +1) + "0530";
+        
+        departure.setTime(hhmm);
+        departure.setDate(yyyymmdd);
+        
+        Integer mins = departure.getMinutesUntil();
+        
+        assertTrue("should be positive", mins > 0);
+    }
+    
+    @Test
+    public void testGetMinutesUntilWorksWhenDepartureTimeIsZeroWholeMinutesFromNow() {
+        Date now = new Date();
+        String hhmm = new SimpleDateFormat("HHmm").format(now);
+        Integer deptime = Integer.parseInt(hhmm)+1;
+        
+        String yyyymmdd = new SimpleDateFormat("yyyyMMdd").format(now);
+        
+        departure.setTime(deptime.toString());
+        departure.setDate(yyyymmdd);
+        
+        Integer mins = departure.getMinutesUntil();
+        
+        assertEquals("should be one", new Integer(0), mins);
+    }
+    
+    @Test
+    public void testGetMinutesUntilWorksWhenDepartureTimeIsOneMinuteFromNow() {
+        Date now = new Date();
+        String hhmm = new SimpleDateFormat("HHmm").format(now);
+        Integer deptime = Integer.parseInt(hhmm)+2;
+        
+        String yyyymmdd = new SimpleDateFormat("yyyyMMdd").format(now);
+        
+        departure.setTime(deptime.toString());
+        departure.setDate(yyyymmdd);
+        
+        Integer mins = departure.getMinutesUntil();
+        
+        assertEquals("should be one", new Integer(1), mins);
     }
 }

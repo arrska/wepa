@@ -13,6 +13,6 @@
         
         <a href="<c:url value="/app/login" />">login</a><br />
         <a href="<c:url value="/app/register" />">register</a><br />
-        <a href="<c:url value="/app/stop" />">mystops</a><br />
+        <a href="<c:url value="/app/stop" />">my stops</a><br />
     </body>
 </html>

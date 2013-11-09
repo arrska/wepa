@@ -1,5 +1,3 @@
-
-
 package wad.hsltimetables.repository;
 
 import org.springframework.data.repository.CrudRepository;

@@ -63,7 +63,7 @@
                 <c:if test="${!favourite}">
                     <form action="<c:url value="/app/stop/${stop.code}/favourite" />" method="post">
                         <button type="submit">
-                            lisää suosikkeihin
+                            favourite
                         </button>
                     </form>
                 </c:if>
@@ -71,7 +71,7 @@
                 <c:if test="${favourite}">
                     <form action="<c:url value="/app/stop/${stop.code}/unfavourite" />" method="post">
                         <button type="submit">
-                            poista suosikeista
+                            unfavourite
                         </button>
                     </form>
                 </c:if>
