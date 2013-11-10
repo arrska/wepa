@@ -14,7 +14,7 @@
         <h1>${username}</h1>
         
         <c:url value="/app/user/${username}" var="formAction" />
-        <form:form action="${formAction}" method="DELETE">
+        <form:form commandName="delForm" action="${formAction}" method="DELETE">
             <button type="submit">delete user</button>
         </form:form>
         <br />

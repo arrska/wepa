@@ -10,4 +10,15 @@
                 <skipTests>true</skipTests>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-Selenium Tests</actionName>
+            <displayName>Selenium Tests</displayName>
+            <goals>
+                <goal>test-compile</goal>
+                <goal>surefire:test</goal>
+            </goals>
+            <properties>
+                <test>Selenium*#test*</test>
+            </properties>
+        </action>
     </actions>
