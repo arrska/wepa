@@ -12,5 +12,5 @@ public interface UserControlService {
     public void deleteUser(String username);
     public boolean isAuthenticated();
 
-    public void changePassword(User authenticatedUser, String password1);
+    public void changePassword(User authenticatedUser, String password);
 }

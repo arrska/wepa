@@ -12,7 +12,7 @@ import wad.hsltimetables.domain.User;
 import wad.hsltimetables.repository.UserRepository;
 
 @Service
-public class MyTimetablesUserControlSerivice implements UserControlService {
+public class MyTimetablesUserControlService implements UserControlService {
     @Autowired
     private UserRepository userRepo;
     
@@ -66,19 +66,22 @@ public class MyTimetablesUserControlSerivice implements UserControlService {
     @Transactional(readOnly = true)
     public User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) return null;
         return this.findUser(auth.getName());
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean isAuthenticated() {
-        return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+        Authentication a = SecurityContextHolder.getContext().getAuthentication();
+        if (a == null) return false;
+        return a.isAuthenticated();
     }
 
     @Override
     @Transactional(readOnly = false)
-    public void changePassword(User authenticatedUser, String password1) {
-        authenticatedUser.setPassword(password1);
+    public void changePassword(User authenticatedUser, String password) {
+        authenticatedUser.setPassword(password);
         userRepo.save(authenticatedUser);
     }
 

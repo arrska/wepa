@@ -114,7 +114,9 @@ public class HSLTimetableService implements TimetableService {
     @Override
     @Cacheable(value ="stops")
     public Stop getStop(Integer stopCode) {
-        return findStops(stopCode.toString()).get(0);
+        List<Stop> stops = findStops(stopCode.toString());
+        if (stops == null) return null;
+        return stops.get(0);
     }
     
     @Cacheable(value ="stops")
@@ -122,7 +124,9 @@ public class HSLTimetableService implements TimetableService {
     public List<Stop> findStops(String query) {
         System.out.println("getting stops with query \"" + query + "\" from HSLapi");
         String searchUrl = stopSearchUrl(query, new Date(), 360, 10);
+        
         List<Stop> stops = restTemplate.getForObject(searchUrl, StopList.class);
+        
         return stops;
     }
     
@@ -137,4 +141,5 @@ public class HSLTimetableService implements TimetableService {
             return null;
         return lines.get(0);
     }
+    
 }

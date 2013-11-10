@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestClientException;
 import wad.hsltimetables.data.formobject.StopSearchFormObject;
 import wad.hsltimetables.domain.Stop;
 import wad.hsltimetables.domain.User;
@@ -43,7 +44,14 @@ public class StopController {
             return "stop/stopsearch";
         }
         
-        List<Stop> stops = stopService.searchStop(searchForm.getQuery());
+        List<Stop> stops = null;
+        try {
+            stops = stopService.searchStop(searchForm.getQuery());
+        } catch (RestClientException e) {
+            model.addAttribute("message", "API error");
+        } catch (Exception e) {
+            model.addAttribute("message", "Unknown error");
+        }
         model.addAttribute("stops", stops);
         model.addAttribute("query", searchForm.getQuery());
         return "stop/stopsearch";

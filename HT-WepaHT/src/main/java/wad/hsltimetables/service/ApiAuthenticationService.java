@@ -8,7 +8,7 @@ import wad.hsltimetables.domain.User;
 @Service
 public class ApiAuthenticationService {
     @Autowired
-    UserControlService userControlService;
+    private UserControlService userControlService;
     
     @Transactional(readOnly = true)
     public User authenticate(String apikey) throws Exception {

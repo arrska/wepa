@@ -23,6 +23,8 @@ public class StopService {
     public Stop getStop(Integer stopCode) {
         Stop stop = timetableService.getStop(stopCode);
         
+        if (stop==null) return null;
+        
         List<Line> lines = new ArrayList<Line>();
         for (LineInfo lineinfo : stop.getLineInfos()) {
             Line line = timetableService.getLine(lineinfo.getLineCode());
@@ -41,6 +43,8 @@ public class StopService {
     }
     
     public List<Stop> getStops(List<Integer> stopcodes) {
+        if (stopcodes==null) return null;
+        
         List<Stop> stops = new ArrayList<Stop>();
 
         for (Integer stopcode : stopcodes) {
