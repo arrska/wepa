@@ -55,7 +55,7 @@ public class TimetableServiceTest {
     public void stopSearchReturnsEmptyListIfNothingFound() {
         String query = "Kemijärven taksitolppa";
         List<Stop> stops = timetableService.findStops(query);
-        assertTrue("'"+ query + "' query should return an empty list", stops.isEmpty());
+        assertNull("'"+ query + "' query should return null", stops);
     }
     
     @Test

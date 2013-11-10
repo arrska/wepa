@@ -12,6 +12,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jetty.port>8090</jetty.port>
     </properties>
 
     <dependencies>
@@ -284,20 +285,22 @@
                 <version>8.1.12.v20130726</version>
 
                 <configuration>
-                    <stopKey>wadaap</stopKey>
-                    <stopPort>8091</stopPort>            
+                    <!--stopKey>wadaap</stopKey>
+                    <stopPort>8091</stopPort-->            
                     <scanIntervalSeconds>5</scanIntervalSeconds>
+                    <stopKey>stop-jetty</stopKey>
+                    <stopPort>9090</stopPort>
                     
                     <systemProperties>
                         <systemProperty>
                             <name>jetty.port</name>
-                            <value>8090</value>
+                            <value>${jetty.port}</value>
                         </systemProperty>
                     </systemProperties>
                     
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>8090</port>
+                            <port>${jetty.port}</port>
                         </connector>
                     </connectors>
                 </configuration>
