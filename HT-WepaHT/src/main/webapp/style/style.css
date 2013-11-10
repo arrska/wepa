@@ -24,3 +24,19 @@ table, td, tbody, table caption {
 .hidden {
     display: none;
 }
+
+ul li {
+    display:block;
+    float:left;
+    /*border: 1px solid green;*/
+    margin-left:10px;
+    /*background-color: green;*/
+}
+
+ul {
+    padding-bottom: 10px;
+}
+
+a {
+    color: blue;
+}

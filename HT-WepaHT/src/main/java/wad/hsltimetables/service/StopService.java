@@ -34,10 +34,17 @@ public class StopService {
         
         stop.setLines(lines);
         
+        List<Departure> nextDeps = new ArrayList<Departure>();
         if (stop.getDepartures() != null) {
             for (Departure departure : stop.getDepartures()) {
-                departure.setLine(timetableService.getLine(departure.getLineCode()));
+                if (departure.getMinutesUntil() > -1) {
+                    departure.setLine(timetableService.getLine(departure.getLineCode()));
+                    nextDeps.add(departure);
+                }
+                if (nextDeps.size() == 10) break;
             }
+            
+            stop.setDepartures(nextDeps);
         }
         return stop;
     }
@@ -57,6 +64,6 @@ public class StopService {
     @Scheduled(fixedRate = 300000) //every 5 minutes
     @CacheEvict(value = "stops", allEntries = true)
     public void evictStopCache() {
-//        System.out.println("Stop cache evicter called");
+        System.out.println("Stop cache evicter called");
     }
 }

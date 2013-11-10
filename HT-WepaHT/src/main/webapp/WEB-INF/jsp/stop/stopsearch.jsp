@@ -15,7 +15,7 @@
         <form:form commandName="searchForm" method="GET" action="${pageContext.request.contextPath}/app/stop/search">
             <form:input path="query" /><form:errors path="query" />
             <br />
-            <input type="submit" />
+            <button type="submit">SEARCH</button>
         </form:form>
         
         <c:if test="${not empty stops}">
@@ -43,6 +43,10 @@
                     </tr>
                 </c:forEach>
             </table>
+        </c:if>
+            
+        <c:if test="${empty stops and not empty query}">
+            <h2>No results for "<c:out value="${query}" />"</h2>
         </c:if>
     </body>
 </html>

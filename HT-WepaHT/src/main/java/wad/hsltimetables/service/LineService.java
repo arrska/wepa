@@ -18,6 +18,6 @@ public class LineService {
     @Scheduled(cron = "1 1 * * * *") //every hour
     @CacheEvict(value = "lines", allEntries = true)
     public void evictLineCache() {
-//        System.out.println("Line cache evicter called");
+        System.out.println("Line cache evicter called");
     }
 }

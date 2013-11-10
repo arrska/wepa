@@ -10,9 +10,8 @@
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
         <h1>HSL timetables</h1>
-        
-        <a href="<c:url value="/app/login" />">login</a><br />
-        <a href="<c:url value="/app/register" />">register</a><br />
-        <a href="<c:url value="/app/stop" />">my stops</a><br />
+        <h2>Welcome!</h2>
+        This service uses HSL timetable data via <a href="http://developer.reittiopas.fi/pages/en/http-get-interface-version-2.php">HSL Reittiopas HTTP API</a><br />
+        Start by signing in or registering. Or just by searching some timetables. <br />
     </body>
 </html>

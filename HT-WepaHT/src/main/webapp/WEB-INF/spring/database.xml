@@ -16,14 +16,6 @@
  
     <jpa:repositories base-package="wad" />
     
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="persistenceUnitDev" /> 
-        <property name="dataSource" ref="dataSource" />
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"/>
-        </property>
-    </bean>
-    
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
@@ -34,10 +26,28 @@
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
     
     <beans profile="dev,default">
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="persistenceUnitName" value="persistenceUnitDev" /> 
+            <property name="dataSource" ref="dataSource" />
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"/>
+            </property>
+        </bean>
+        
         <jdbc:embedded-database id="dataSource" type="H2" />
     </beans>
     
     <beans profile="production">
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="persistenceUnitName" value="persistenceUnitProduction" /> 
+            <property name="dataSource" ref="dataSource" />
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"/>
+            </property>
+        </bean>
+        
+        
+    <!-- heroku postgres configuration -->
         <bean class="java.net.URI" id="dbUrl">
             <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
         </bean>
@@ -47,11 +57,5 @@
             <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
             <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
         </bean>
-        <!--bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-            <property name="driverClassName" value="org.postgresql.Driver"/>
-            <property name="url" value="${database.url}"/>
-            <property name="username" value="${database.username}"/>
-            <property name="password" value="${database.password}"/>
-        </bean-->
     </beans>
 </beans>

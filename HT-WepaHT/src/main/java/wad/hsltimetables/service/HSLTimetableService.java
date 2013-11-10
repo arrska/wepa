@@ -26,7 +26,6 @@ public class HSLTimetableService implements TimetableService {
     @Value("${hslapi.pass}")
     private String tokenPass;
     
-    //private ObjectMapper HSLStopMapper;
     private RestTemplate restTemplate;
     
     @PostConstruct
@@ -43,7 +42,6 @@ public class HSLTimetableService implements TimetableService {
         
         if (token == null) token = "";
         if (tokenPass == null) tokenPass = "";
-        //HSLStopMapper = new ObjectMapper();
     }
     
     public static String TransportType(Integer transportTypeId) {
@@ -123,7 +121,7 @@ public class HSLTimetableService implements TimetableService {
     @Override
     public List<Stop> findStops(String query) {
         System.out.println("getting stops with query \"" + query + "\" from HSLapi");
-        String searchUrl = stopSearchUrl(query, new Date(), 360, 10);
+        String searchUrl = stopSearchUrl(query, new Date(), 360, 15);
         
         List<Stop> stops = restTemplate.getForObject(searchUrl, StopList.class);
         

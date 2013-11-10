@@ -45,7 +45,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input type="submit" />
+                                <button type="submit">REGISTER</button>
                             </td>
                         </tr>
                     </tbody>

@@ -4,7 +4,7 @@
 <nav>
     <ul>
         <li>
-            <a href="<c:url value="/app/" />">first page</a>
+            <a href="<c:url value="/app/" />">front page</a>
         </li>
         <li>
             <a href="<c:url value="/app/stop/search" />">search</a>
@@ -21,6 +21,9 @@
         <sec:authorize access="!isAuthenticated()">
             <li>
                 <a href="<c:url value="/app/login" />" >login</a>
+            </li>
+            <li>
+                <a href="<c:url value="/app/register" />" >register</a>
             </li>
         </sec:authorize>
     </ul>

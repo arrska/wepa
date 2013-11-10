@@ -15,7 +15,7 @@
             You are already logged in. :)
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">
-            <h1>Log in to myTimetables</h1>
+            <h1>Log in to HSL Timetables</h1>
             
             <c:if test="${error}">
                 <div class="errorblock">
@@ -37,7 +37,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input type="submit" />
+                                <button type="submit">LOG IN</button>
                             </td>
                         </tr>
                     </tbody>
