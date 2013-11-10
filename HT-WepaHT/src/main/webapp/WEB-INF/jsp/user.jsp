@@ -18,7 +18,7 @@
             <button type="submit">delete user</button>
         </form:form>
         <br />
-        api key: <b> ${apikey} </b>
+        api key: <span id="apikey"><b> ${apikey} </b></span>
         <br />
         <br />
         <form:form commandName="passwdForm" action="${formAction}" method="PUT">

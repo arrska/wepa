@@ -6,6 +6,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wad.hsltimetables.domain.Line;
 
+
+/* 
+* Takes care of line-related queries to timetableService
+* so that timetableService.getLine() gets called from outside
+* because of spring proxy mechanism caching wouldn work if 
+* called from same class
+*/
 @Service
 public class LineService {
     @Autowired

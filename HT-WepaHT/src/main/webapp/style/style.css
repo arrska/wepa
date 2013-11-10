@@ -25,7 +25,7 @@ table, td, tbody, table caption {
     display: none;
 }
 
-ul li {
+nav ul li {
     display:block;
     float:left;
     /*border: 1px solid green;*/
@@ -33,7 +33,7 @@ ul li {
     /*background-color: green;*/
 }
 
-ul {
+nav ul {
     padding-bottom: 10px;
 }
 

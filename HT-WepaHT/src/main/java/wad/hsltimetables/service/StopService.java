@@ -11,6 +11,13 @@ import wad.hsltimetables.domain.Line;
 import wad.hsltimetables.domain.LineInfo;
 import wad.hsltimetables.domain.Stop;
 
+
+/* 
+* Takes care of stop-related queries to timetableService
+* so that timetableService.getfindStops(), getLine() and getStop()
+* is called from outside of timetableService
+* because of spring proxy mechanism, caching wouldn work otherwise
+*/
 @Service
 public class StopService {
     @Autowired

@@ -34,6 +34,12 @@ public class StopController {
     @Value("${gmapi.apikey}")
     private String googleMapsAPIKey;
     
+    
+    /*
+    * With specific queries takes long time and returns RestClienException
+    * Heroku timeout is 30s, so the nice API Error -message is not shown there
+    * wont'n fix today
+    */
     @RequestMapping(value="stop/search", method=RequestMethod.GET)
     public String stopSearch(
             @Valid @ModelAttribute(value = "searchForm") StopSearchFormObject searchForm,

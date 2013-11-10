@@ -3,7 +3,9 @@ package wad.hsltimetables.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import java.util.List;
+import wad.hsltimetables.data.jsonview.JsonViews;
 import wad.hsltimetables.service.HSLTimetableService;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -81,7 +83,8 @@ public class Line {
         this.end = end;
     }
 
-    @JsonIgnore(value = true)
+    @JsonProperty(value = "line_stops")
+    @JsonView(JsonViews.DefaultLineView.DetailedLineView.class)
     public List<LineStop> getStops() {
         return stops;
     }

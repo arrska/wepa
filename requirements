@@ -11,6 +11,6 @@
 [x] json api
   [x] user's favourite stops
   [x] stop timetable
-[_] input validation
-[_] input and output sanitization
+[x] input validation
+[x] input and output sanitization
 

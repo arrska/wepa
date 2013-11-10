@@ -1,4 +1,4 @@
 [x] cache
-[_] database (sqlite?)
+[x] database postgre for heroku
 [_] internationalization
-[_] transactions
+[x] transactions

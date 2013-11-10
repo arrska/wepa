@@ -9,6 +9,8 @@
     </head>
     <body>
         <jsp:include page="/WEB-INF/jsp/common/header.jsp" />
+        <div id="mystops">
+        
         <h1>My stops</h1>
         <c:if test="${empty stops}">
             no favourited stops
@@ -24,5 +26,7 @@
                 </c:forEach>
             </ul>
         </c:if>
+            
+        </div>
     </body>
 </html>
